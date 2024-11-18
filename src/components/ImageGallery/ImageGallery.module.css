@@ -1,0 +1,23 @@
+.list {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(250px, 1fr)
+  ); /* Створює адаптивну сітку */
+  grid-gap: 10px; /* Відстань між зображеннями */
+  padding: 10px; /* Внутрішні відступи галереї */
+  margin: 0; /* Вирівнювання по краях */
+  list-style-type: none; /* Вимикає маркери списку */
+  object-fit: cover;
+}
+.listItem {
+  overflow: hidden;
+  border-radius: 8px; /* Заокруглення країв */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Додає тінь для створення глибини */
+}
+.listItem img {
+  width: 100%;
+
+  object-fit: cover; /* Забезпечує пропорційне відображення зображення без деформацій */
+  transition: transform 0.3s ease; /* Анімація при наведенні */
+}
