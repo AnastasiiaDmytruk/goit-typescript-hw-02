@@ -2,12 +2,12 @@ import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
 import styles from "./App.module.css";
-import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
-import ImageGallery from "./components/ImageGallery/ImageGallery";
-import ImageModal from "./components/ImageModal/ImageModal";
-import Loader from "./components/Loader/Loader";
-import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
-import SearchBar from "./components/SearchBar/SearchBar";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
+import ImageGallery from "../ImageGallery/ImageGallery";
+import ImageModal from "../ImageModal/ImageModal";
+import Loader from "../Loader/Loader";
+import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
+import SearchBar from "../SearchBar/SearchBar";
 
 const API_URL = "https://api.unsplash.com/search/photos";
 const API_KEY = "S7fJoSs7dZ76egNkIJ7y9brZtLi6uVWsnhV3owtbRt4";
