@@ -1,7 +1,12 @@
-import { Toaster } from "react-hot-toast";
 import styles from "./SearchBar.module.css";
 
-const SearchBar = ({ onSubmit }) => {
+import { Toaster } from "react-hot-toast";
+import { FormEvent } from "react";
+
+interface SearchBarProps {
+  onSubmit: (event: FormEvent<HTMLFormElement>) => void;
+}
+const SearchBar: React.FC<SearchBarProps> = ({ onSubmit }) => {
   return (
     <div>
       <Toaster />

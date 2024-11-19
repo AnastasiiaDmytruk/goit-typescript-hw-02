@@ -1,9 +1,12 @@
 import styles from "./ErrorMessage.module.css";
 
-const ErrorMessage = ({ message }) => {
+interface MessageProps {
+  message: string;
+}
+const ErrorMessage: React.FC<MessageProps> = ({ message }) => {
   return (
     <div>
-      <p>`Upps...There is an error.${message} Please try again later...`</p>
+      <p>Upps...There is an error.{message} Please try again later...</p>
     </div>
   );
 };

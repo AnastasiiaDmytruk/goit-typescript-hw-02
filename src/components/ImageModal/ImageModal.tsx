@@ -3,10 +3,21 @@ import styles from "./ImageModal.module.css";
 import Modal from "react-modal";
 
 import { CgCloseO } from "react-icons/cg";
+import { Photo } from "../App/App.types";
 
 Modal.setAppElement("#root");
 
-const ImageModal = ({ modalImages, closeModal, modalIsOpen }) => {
+interface ImageModalProps {
+  modalImages: Photo | null;
+  closeModal: () => void;
+  modalIsOpen: boolean;
+}
+
+const ImageModal: React.FC<ImageModalProps> = ({
+  modalImages,
+  closeModal,
+  modalIsOpen,
+}) => {
   return (
     <div>
       <Modal
@@ -28,8 +39,6 @@ const ImageModal = ({ modalImages, closeModal, modalIsOpen }) => {
               <p className={styles.text}>
                 Photo: {modalImages.alt_description}
               </p>
-              {/* <p className={styles.text}>Autor: {modalImages.user.name}</p>
-              <p className={styles.text}>Likes: {modalImages.likes}</p> */}
             </div>
           </div>
         )}

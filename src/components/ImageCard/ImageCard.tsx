@@ -1,10 +1,15 @@
+import { Photo } from "../App/App.types";
 import styles from "./ImageCard.module.css";
 
-const ImageCard = ({ photo, openModal }) => {
+interface ImageCardProps {
+  photo: Photo;
+  openModal: (photo: Photo) => void;
+}
+
+const ImageCard: React.FC<ImageCardProps> = ({ photo, openModal }) => {
   return (
     <div>
       <img
-        // data-modal={photo.urls.regular}
         className={styles.img}
         src={photo.urls.small}
         alt={photo.alt_description}

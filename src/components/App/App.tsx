@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import styles from "./App.module.css";
+
 import toast from "react-hot-toast";
 import axios from "axios";
-import styles from "./App.module.css";
+
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import ImageGallery from "../ImageGallery/ImageGallery";
 import ImageModal from "../ImageModal/ImageModal";
@@ -9,41 +10,48 @@ import Loader from "../Loader/Loader";
 import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
 import SearchBar from "../SearchBar/SearchBar";
 
+import { useState, useEffect, FormEvent } from "react";
+import { Data, Photo } from "./App.types";
+
 const API_URL = "https://api.unsplash.com/search/photos";
 const API_KEY = "S7fJoSs7dZ76egNkIJ7y9brZtLi6uVWsnhV3owtbRt4";
 
 function App() {
-  const [photos, setPhotos] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [query, setQuery] = useState("");
-  const [page, setPage] = useState(1);
+  const [photos, setPhotos] = useState<Photo[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [query, setQuery] = useState<string>("");
+  const [page, setPage] = useState<number>(1);
 
   const [displayLoadMore, setDisplayLoadMore] = useState(false);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [modalImages, setModalImages] = useState(null);
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
+  const [modalImages, setModalImages] = useState<Photo | null>(null);
 
-  const handleSubmit = (event) => {
-    // функція обробние
-    event.preventDefault(); // Зупиняємо стандартну поведінку форми, щоб сторінка не перезавантажувалась.
-    const form = event.currentTarget; // Отримуємо посилання на форму, яка була сабмітнута
-    const inputValue = form.elements.searchBarInput.value.trim(); // Отримуємо значення з поля введення (інпуту) з іменем "searchBarInput" і прибираємо пробіли з початку та кінця введеного рядка
-    if (inputValue === "") {
-      toast.error("Enter a word"); // Якщо введене значення порожнє (після видалення пробілів), показуємо сповіщення через toast
-      return; // Зупиняємо виконання функції, оскільки поле порожнє
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const inputElement = form.elements.namedItem(
+      "searchBarInput"
+    ) as HTMLInputElement | null;
+
+    if (!inputElement || inputElement.value.trim() === "") {
+      toast.error("Enter a word");
+      return;
     }
+    const inputValue = inputElement.value.trim();
+
     setDisplayLoadMore(false);
-    setQuery(inputValue); // Якщо значення введено, оновлюємо стан пошукового слова
-    setPage(1); // Скидаємо номер сторінки на 1
-    setPhotos([]); // Очищаємо масив зображень, щоб підготувати його для нових результатів пошуку
-    form.reset(); // Скидаємо форму після сабміту, щоб очистити поле пошуку
+    setQuery(inputValue);
+    setPage(1);
+    setPhotos([]);
+    form.reset();
   };
 
   const handleClick = () => {
     setPage((prevPage) => prevPage + 1);
   };
 
-  const openModal = (photos) => {
+  const openModal = (photos: Photo): void => {
     setModalIsOpen(true);
     setModalImages(photos);
   };
@@ -60,7 +68,7 @@ function App() {
       setDisplayLoadMore(false);
       try {
         setIsLoading(true);
-        const { data } = await axios.get(API_URL, {
+        const { data } = await axios.get<Data>(API_URL, {
           params: {
             client_id: API_KEY,
             query,
@@ -76,8 +84,14 @@ function App() {
         }
 
         setPhotos((prevPhotos) => [...prevPhotos, ...data.results]);
-      } catch (error) {
-        setError(error.message);
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+          setError(error.response?.data?.message || error.message);
+        } else if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError("An unexpected error occurred");
+        }
       } finally {
         setIsLoading(false);
       }
